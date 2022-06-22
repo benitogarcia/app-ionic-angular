@@ -1,15 +1,25 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthorizationAuthenticationGuard } from './guards/authorization-authentication.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    redirectTo: 'food',
     pathMatch: 'full'
   },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+    path: 'food',
+    canActivate: [AuthorizationAuthenticationGuard],
+    loadChildren: () => import('./food/food.module').then( m => m.FoodPageModule)
+  },
+  {
+    path: 'auth/login',
+    loadChildren: () => import('./auth-login/auth-login.module').then( m => m.AuthLoginPageModule)
+  },
+  {
+    path: 'auth/register',
+    loadChildren: () => import('./auth-register/auth-register.module').then( m => m.AuthRegisterPageModule)
   }
 ];
 

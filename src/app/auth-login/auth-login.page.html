@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="food">
+    <ion-title class="ion-text-center text-shadow-white">APP FOOD</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-grid fixed class="center">
+    <ion-row>
+      <ion-col sizeXs="10" sizeXl="6" class="m-lr-auto">
+        <ion-text color="warning">
+          <h1 class="text-center">Log In</h1>
+        </ion-text>
+        <form class="text-start" [formGroup]="formLogin" (ngSubmit)="onSubmit()" autocomplete="off" autocomplete="disabled">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input type="email" formControlName="correo" placeholder="Ingrese email.." color="food"></ion-input>
+            </ion-item>            
+            <div *ngIf="f.correo.invalid && (f.correo.dirty || f.correo.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.correo.errors?.['required']">Email es requerido.</div>
+                <div *ngIf="f.correo.errors?.['pattern']">Email formato invalido.</div>
+              </small>
+            </div>
+            <ion-item class="ion-margin-top">
+              <ion-label position="stacked">Contraseña</ion-label>
+              <ion-input type="password" formControlName="contrasena" placeholder="Ingrese contraseña.." color="food"></ion-input>
+            </ion-item>
+            <div *ngIf="f.contrasena.invalid && (f.contrasena.dirty || f.contrasena.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.contrasena.errors?.['required']">Contraseña es requerido.</div>
+                <div *ngIf="f.contrasena.errors?.['pattern']">Contraseña requiere Mayusculas, Minuscula, numero y un caracter especial <strong>*!?+</strong>.</div>
+              </small>
+            </div>
+            <ion-item lines="none">
+              <ion-label>Recordarme</ion-label>
+              <ion-checkbox color="food" checked slot="start" formControlName="recordarme"></ion-checkbox>
+            </ion-item>
+            <section class="ion-margin-top">
+              <ion-button type="submit" type="submit" expand="block" color="warning" [disabled]="formLogin.invalid || isSubmit">INGRESAR</ion-button>
+            </section>
+          </ion-list>
+        </form>
+        <ion-row>
+          <ion-col size="6">
+            <ion-text color="primary">Mi Contraseña?</ion-text>
+          </ion-col>
+          <ion-col size="6" class="ion-text-right">
+            <ion-text color="primary">
+              <ion-text color="tertiary" routerLink="/auth/register">Registrarme.</ion-text>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

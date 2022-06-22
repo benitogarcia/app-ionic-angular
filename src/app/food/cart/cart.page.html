@@ -1,0 +1,139 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="food">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mi Carrito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="container-p">
+  <div class="sticky text-center">
+    <ion-button color="danger" style="width: 48%;" (click)="removeItemsProd()">
+      <ion-icon name="close-circle-outline"></ion-icon>
+      Cancelar
+    </ion-button>
+    <ion-button color="warning" type="submit" style="width: 48%;" (click)="mdlFormaPago=true">
+      <ion-icon name="send-outline"></ion-icon>
+      Enviar
+    </ion-button>
+    <h4 style="margin-top: 5px;">
+      <ion-badge color="danger">Total: ${{ total | currency}}</ion-badge>
+    </h4>
+  </div>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let prod of (productos$ | async)">
+      <ion-item lines="none">
+        <ion-avatar slot="start" style="width: 30%; height: auto;">
+          <img *ngIf="prod.imagen" src="{{ prod.imagen + '?raw=1' }}" class="img-flud" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ prod.nombre }}</h2>
+          <h3><strong>Ordenes: {{prod.ordenes}}</strong></h3>
+          <h3>$ {{ prod.total | number: '1.2-2' }}</h3>
+          <p *ngIf="prod.c_obligatorio">
+            {{ prod.d_obligatorio }}
+          </p>
+        </ion-label>
+        <ion-icon slot="end" name="chevron-back-outline"></ion-icon>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="removeItemProd(prod)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-modal [isOpen]="mdlFormaPago">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="food">
+          <ion-title>Datos de envio</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="btnCancelarFormSend()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
+          <ion-slides style="height: inherit;">
+            <ion-slide>
+              <div class="slide" style="width: inherit;">
+                <p>
+                  <ion-icon name="chevron-back-outline"></ion-icon> decile a la izquierda.
+                </p>
+                <div class="titulo-fp">Forma de pago {{total | currency}}</div>
+                <ion-list>
+                  <ion-radio-group [value]="formasPagos[0].clave" formControlName="formapago"
+                    (ionChange)="rdFormaPagoChangeValue($event)">
+                    <ion-item *ngFor="let opcion of formasPagos">
+                      <ion-label>{{opcion.descripcion}}</ion-label>
+                      <ion-radio slot="start" color="success" [value]="opcion.clave"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-list>
+                <div *ngIf="formaPago==formasPagos[0].clave">
+                  <ion-item>
+                    <ion-label>Pagara con $</ion-label>
+                    <ion-input type="number" formControlName="pagoIngresado" placeholder="00.00" value="{{pagaraTotal}}" [debounce]="300"
+                      (ionChange)="inPagareChangeValue($event)"></ion-input>
+                  </ion-item>
+                  <ion-text color="danger" *ngIf="total > pagaraTotal">
+                    <h6>* Cantidad es inválida.</h6>
+                  </ion-text>
+                </div>
+                <div *ngIf="formaPago==formasPagos[1].clave">
+
+                  <input type="file" accept="image/*" (change)="fileUpload($event)" id="file-input"
+                    style="width: 0px; height: 0px;">
+                  <ion-button (click)="onClick()" expand="block" shape="round">
+                    <ion-icon name="image-outline"></ion-icon> Captura
+                  </ion-button>
+                  <img *ngIf="srcImgCaptura" src="{{srcImgCaptura}}" style="width: 70% !important;">
+                </div>
+              </div>
+            </ion-slide>
+
+            <ion-slide>
+              <div class="slide" style="width: inherit;">
+                <br>
+                <div class="titulo-fp">Forma de entrega</div>
+                <ion-list class="w-100">
+                  <ion-radio-group formControlName="formaentrega" value="{{formaEntrega}}"
+                    (ionChange)="rdDireccionChangeValue($event)">
+                    <ion-item *ngFor="let fe of formasEntregas">
+                      <ion-label>{{fe.descripcion}}</ion-label>
+                      <ion-radio value="{{fe.clave}}" slot="start"></ion-radio>
+                    </ion-item>
+                  </ion-radio-group>
+                  <div *ngIf="formasEntregas[1].clave==formaEntrega">
+                    <ion-text color="danger">
+                      <h4>Dirección de entrega</h4>
+                    </ion-text>
+                    <ion-text color="primary">
+                      <h6>* El costo de envío no está incluido en el costo total</h6>
+                    </ion-text>
+                    <ion-radio-group name="direccion">
+                      <ion-item *ngFor="let dr of direcciones">
+                        <ion-label>{{dr.calle}}, #Ext: {{dr.num_ext}} - #Int: {{dr.num_int}}</ion-label>
+                        <ion-radio value="{{dr.id}}" slot="start"></ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                  </div>
+                  <br>
+                  <ion-button fill="clear" type="submit">
+                    Enviar
+                    <ion-icon name="send-outline"></ion-icon>
+                  </ion-button>
+                </ion-list>
+              </div>
+            </ion-slide>
+          </ion-slides>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

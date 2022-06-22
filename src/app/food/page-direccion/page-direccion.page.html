@@ -1,0 +1,132 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="food">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dirección</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="container-p">
+
+  <ion-item lines="none">
+    <ion-button size="small" color="tertiary" slot="start" (click)="btnOpenModal()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-list>
+    <!--ion-list-header> Recent Conversations </ion-list-header-->
+    <ion-item *ngFor="let itemDirec of direcciones">
+      <ion-icon name="create-outline" slot="end" color="primary" (click)="btnEditDireccion(itemDirec)"></ion-icon>
+      <ion-icon name="close-circle-outline" slot="end" color="danger" (click)="btnEliminarDireccion(itemDirec)"></ion-icon>
+      <ion-label>
+        <h2>{{ itemDirec.calle }}</h2>
+        <h3># Exte: {{ itemDirec.num_ext}}, # Inte: {{ itemDirec.num_int }}</h3>
+        <p>{{ itemDirec.referencia }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Require Action Sheet confirmation before dismissing -->
+  <ion-modal [isOpen]="isShowModal">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="food">
+          <ion-title *ngIf="isShowModal">Nueva Dirección</ion-title>
+          <ion-title *ngIf="!isShowModal">Modificar Dirección</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="btnCancelarFormDireccion()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div class="container-p">
+          <form [formGroup]="formDireccion" (ngSubmit)="submitFormDireccion()">
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label>Cod. Postal</ion-label>
+                    <ion-input type="text" placeholder="código postal" clearInput="true"
+                      (ionChange)="changeCodigoPostal($event)" [debounce]="300"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label> <span class="ion-text-danger">* </span> Estado</ion-label>
+                    <ion-select interface="popover" formControlName="idestado" (ionChange)="changeEstado($event)">
+                      <ion-select-option *ngFor="let itemEstado of estados" value="{{itemEstado.id}}">
+                        {{itemEstado.estado}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label> <span class="ion-text-danger">* </span> Municipio</ion-label>
+                    <ion-select interface="popover" formControlName="idmunicipio" (ionChange)="changeMunicipio($event)">
+                      <ion-select-option *ngFor="let itemEMpio of municipios" value="{{itemEMpio.id}}">
+                        {{itemEMpio.municipio}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label><span class="ion-text-danger">* </span> Asentamiento</ion-label>
+                    <ion-select interface="popover" formControlName="idasentamiento">
+                      <ion-select-option *ngFor="let itemAsent of asentamientos" value="{{itemAsent.id}}">
+                        {{itemAsent.asentamiento}}</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label position="floating"><span class="ion-text-danger">* </span> Calle</ion-label>
+                    <ion-input placeholder="Ingrese calle..." type="text" formControlName="calle"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="6" sizeSm="6">
+                  <ion-item>
+                    <ion-label position="floating"><span class="ion-text-danger">* </span> No. Ext.</ion-label>
+                    <ion-input type="number" value="0" 
+                    placeholder="Ingrese num. ext..." formControlName="num_ext"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="6" sizeSm="6">
+                  <ion-item>
+                    <ion-label position="floating"><span class="ion-text-danger">* </span> No. Int.</ion-label>
+                    <ion-input type="number" value="0" 
+                    placeholder="Ingrese num. int..." formControlName="num_int"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label position="floating">Calle 1</ion-label>
+                    <ion-input type="text" formControlName="calle_uno" 
+                    placeholder="Ingrese entre calle 1..."></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label position="floating">Calle 2</ion-label>
+                    <ion-input type="text" formControlName="calle_dos" 
+                    placeholder="Ingrese entre calle 2..."></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col sizeXs="12" sizeSm="12">
+                  <ion-item>
+                    <ion-label position="floating">Referencia</ion-label>
+                    <ion-textarea placeholder="referencia" rows="1" formControlName="referencia"></ion-textarea>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-button type="submit" color="food" expand="block" shape="round" [disabled]="formDireccion.invalid">
+              GUARDAR
+            </ion-button>
+          </form>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

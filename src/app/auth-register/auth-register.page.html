@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar color="food">
+    <ion-buttons slot="start" routerLink="/auth/login">
+      <ion-button expand="block" fill="clear" shape="round">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="text-shadow-white">APP FOOD</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!--ion-header>
+  <ion-toolbar color="food">
+    <ion-title class="ion-text-center text-shadow-white">APP FOOD</ion-title>
+  </ion-toolbar>
+</ion--->
+<ion-content>
+  <form class="ion-margin-horizontal" [formGroup]="formRegistrar" (ngSubmit)="registrar()" autocomplete="off">
+    <ion-grid fixed  >
+      <ion-row>
+        <ion-col sizeXs="10" sizeSm="110" sizeMd="6"  class="m-lr-auto">
+          <ion-text color="food" class="ion-text-center">
+            <h1>Sign In</h1>
+          </ion-text>
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input type="text" placeholder="Ingrese nombre.." formControlName="nombres" color="food"></ion-input>
+            </ion-item>
+            <div *ngIf="f.nombres.invalid && (f.nombres.dirty || f.nombres.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.nombres.errors?.['required'] || nombreInvalid">Nombre es requerido.</div>
+                <div *ngIf="f.nombres.errors?.['pattern']">Nombre invalido, 3 caracteres mínima.</div>
+              </small>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Apellidos</ion-label>
+              <ion-input type="text" placeholder="Ingrese apellidos.." formControlName="apellidos" color="food">
+              </ion-input>
+            </ion-item>
+            <div *ngIf="f.apellidos.invalid && (f.apellidos.dirty || f.apellidos.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.apellidos.errors?.['required'] || apelliInvalid">Nombre es requerido.</div>
+                <div *ngIf="f.apellidos.errors?.['pattern']">Nombre invalido, 3 caracteres mínima.</div>
+              </small>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-input type="email" placeholder="Ingrese email.." formControlName="correo" color="food"></ion-input>
+            </ion-item>
+            <div *ngIf="f.correo.invalid && (f.correo.dirty || f.correo.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.correo.errors?.['required']">Email es requerido.</div>
+                <div *ngIf="f.correo.errors?.['pattern']">Email formato invalido.</div>
+              </small>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Teléfono</ion-label>
+              <ion-input type="number" placeholder="Ingrese teléfono.." formControlName="telefono" color="food">
+              </ion-input>
+            </ion-item>
+            <div *ngIf="f.telefono.invalid && (f.telefono.dirty || f.telefono.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.telefono.errors?.['required']">Teléfono es requerido.</div>
+                <div *ngIf="f.telefono.errors?.['pattern']">Teléfono formato 10 dígitos.</div>
+              </small>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Contraseña</ion-label>
+              <ion-input type="password" placeholder="Ingrese ontraseña.." formControlName="contrasena" color="food">
+              </ion-input>
+            </ion-item>
+            <div *ngIf="f.contrasena.invalid && (f.contrasena.dirty || f.contrasena.touched)" class="ion-text-danger">
+              <small>
+                <div *ngIf="f.contrasena.errors?.['required']">Contraseña es requerido.</div>
+                <div *ngIf="f.contrasena.errors?.['pattern']">Contraseña requiere Mayusculas, Minuscula, numero y un caracter especial <strong>*!?+</strong>.</div>
+              </small>
+            </div>
+            <ion-item>
+              <ion-label position="stacked">Confirmar Contraseña</ion-label>
+              <ion-input type="password" placeholder="Ingrese ontraseña.." formControlName="confContrasena"
+                color="food">
+              </ion-input>
+            </ion-item>
+            <div *ngIf="f.confContrasena.invalid && (f.confContrasena.dirty || f.confContrasena.touched)"
+              class="invalid-feedback">
+              <div *ngIf="f.confContrasena.errors.mustMatch">Password and confirm not match</div>
+            </div>
+            <ion-button type="submit" expand="block" shape="round" color="food" class="ion-margin-top"
+              [disabled]="formRegistrar.invalid || isSubmit">
+              REGISTRAR
+            </ion-button>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

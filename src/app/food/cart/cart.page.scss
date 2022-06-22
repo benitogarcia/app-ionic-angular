@@ -1,0 +1,31 @@
+ion-avatar,
+ion-avatar>img {
+    border-radius: 5%;
+}
+
+ion-select {
+    max-width: 90% !important;
+}
+
+#file-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 999;
+}
+
+.titulo-fp {
+    text-align: start !important;
+    padding: 5px !important;
+    color: white;
+    background-color: var(--ion-color-food);
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.swiper-slide {
+    width: 100% !important;
+}

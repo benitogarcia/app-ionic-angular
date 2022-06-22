@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="food">
+    <ion-buttons slot="start" routerLink="../../">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      <strong>Producto</strong>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content fullscreen class="container">
+
+  <ion-item lines="none">
+    <ion-avatar slot="start" style="width: 30%; height: auto;">
+      <img *ngIf="producto.imagen" src="{{ producto.imagen + '?raw=1'}}" class="img-flud" />
+    </ion-avatar>
+    <ion-label>
+      <h1>{{ producto.nombre }}</h1>
+      <h3>{{ producto.cantidad }} x ${{ producto.precio | number: '1.2-2' }}</h3>
+      <p>{{ producto.descripcion }}</p>
+    </ion-label>
+  </ion-item>
+  <form [formGroup]="form">
+    <div class="sticky ion-margin-vertical">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="5" class="text-center">
+            <ion-button color="warning" type="submit" (click)="btnAnnadir()">
+              Añadir&nbsp;<ion-badge color="danger"> {{numOrdenes}}</ion-badge>
+            </ion-button>
+          </ion-col>
+          <ion-col size="7" class="text-center">
+            <ion-icon name="remove-circle-outline" class="icon-cart pointer span-cart" (click)="btnDecrementar()">
+            </ion-icon>
+            <strong class="total-cart" style="text-decoration: underline; padding-bottom: 3px;">{{ total | currency }}</strong>
+            <ion-icon name="add-circle-outline" class="icon-cart pointer span-cart" (click)="btnAumentar()"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="container-m">
+      <div *ngIf="producto.complementoObligatorio">
+        <ion-title> <span class="ion-text-danger">*</span> Seleccione su complemento</ion-title>
+        <ion-list>
+          <ion-radio-group formControlName="complemento_obligatorio">
+            <ion-item *ngFor="let obli of producto.complObligatorio">
+              <ion-label>{{obli.complemento}}</ion-label>
+              <ion-radio type="radio" name="complemento_obligatorio" value="{{obli.id}}" ></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </div>
+      <div *ngIf="producto.complementoOpcional">
+        <ion-title>Puede añadir</ion-title>
+        <ion-list style="z-index: -2;">
+          <ion-item *ngFor="let opcional of producto.complOpcional; let i = index">
+            <ion-label>{{ opcional.complemento }}&nbsp;&nbsp;&nbsp;${{opcional.precio | number: '1.2-2'}}</ion-label>
+            <ion-checkbox value="{{opcional.id}}" (ionChange)="changeComplOpcional($event, opcional)"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </div>
+      <br>
+      <span class="bg-food-primary">
+        Especificación
+      </span>
+      <ion-item>
+        <ion-textarea rows="1" placeholder="Ingrese su especificación" formControlName="especificacion"></ion-textarea>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>

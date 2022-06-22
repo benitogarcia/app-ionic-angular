@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="food">
+    <ion-buttons slot="start"  routerLink="../../">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      <!--ion-icon name="arrow-back-outline"></ion-icon-->
+      <strong>Categorias</strong>
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar color="food">
+    <ion-searchbar placeholder="Filter Pizza" inputmode="text" type="text" (ionChange)="onSearchChange($event)"
+      [debounce]="250" showCancelButton="always" searchIcon="search-outline"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="container">
+
+  <ion-list>
+    <ion-item *ngFor="let item of categoriasFilter" class="ion-margin-bottom" routerLink="categoria/{{item.id}}">
+      <ion-avatar slot="start" style="width: 30%; height: auto;">
+        <img src="{{item.imagen + '?raw=1'}}" class="img-flud" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{item.nombre}}</h2>
+        <!--h3>{{item.telefono}}</h3-->
+        <p>{{item.descripcion}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
